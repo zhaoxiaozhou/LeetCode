@@ -50,7 +50,7 @@ int MaxSubseqSum(int Array[], int N)
 			right = i;
 		}
 	}
-
+	/*case: all the data is negative*/
 	if(count == N)
 	{
 		maxsum = 0;
@@ -60,8 +60,15 @@ int MaxSubseqSum(int Array[], int N)
 		// left = Array[0];
 		// right = Array[N - 1];
 	}
-
-	printf("%d %d %d", maxsum, Array[left], Array[right]);
+	/*case: all the data is 0 and negative*/
+	if(maxsum == 0 && left == 0 && right == 0)
+	{
+		printf("%d %d %d", maxsum, left, right);
+	}
+	else
+	{
+		printf("%d %d %d", maxsum, Array[left], Array[right]);
+	}
 	return 0;
 }
 
