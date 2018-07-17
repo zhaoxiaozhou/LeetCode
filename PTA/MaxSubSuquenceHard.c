@@ -1,4 +1,5 @@
 /*有一个case过不了，包含负数和0，应该输出0 0 0*/
+/*目前通过了*/
 #include<stdio.h>
 //#include<stdlib.h>
 
