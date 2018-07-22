@@ -1,7 +1,7 @@
 #include<stdio.h>
 
 typedef int ElementType;
-
+S
 typedef struct Node*PtrToNoe;
 struct Node
 {
@@ -37,5 +37,5 @@ List Reverse(List L)
 		q = p;
 		p = t;
 	}
-	return q;
+	return q;  
 }
