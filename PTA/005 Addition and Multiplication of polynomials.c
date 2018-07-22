@@ -362,3 +362,235 @@ Polynominal Mult1(Polynominal P1, Polynominal P2)
 	return P;
 }
 
+
+
+/*PTA 正确答案，上面有一点问题*/
+#include<stdio.h>
+#include<stdlib.h>
+
+typedef int ElementType;
+typedef struct PolyNode *Polynomial;
+struct PolyNode
+{
+	ElementType Coef;
+	ElementType Expon;
+	Polynomial Link;
+};
+
+void Attach(int c, int e, Polynomial * PRear);
+Polynomial ReadPoly();
+Polynomial Add(Polynomial P1, Polynomial P2);
+Polynomial Mult();
+void PrintPoly(Polynomial L);
+
+int main()
+{
+	Polynomial P1, P2, PP, PS;
+	P1 = ReadPoly();
+	P2 = ReadPoly();
+	//PrintPoly(P1);
+	PP = Mult(P1,P2);
+	PrintPoly(PP);
+	
+	PS = Add(P1,P2);
+	PrintPoly(PS);
+
+
+	return 0;
+}
+
+void Attach(int c, int e, Polynomial * PRear)/*这里是指针的指针啊*/
+{
+	/*申请一个空的结点*/
+	Polynomial P;
+	P = (Polynomial)malloc(sizeof(struct PolyNode));
+	P->Coef = c;
+	P->Expon = e;
+	P->Link = NULL;
+	/*把该结点P放在Rear最后*/
+	(*PRear)->Link = P;
+	/*修改尾结点*/
+	(*PRear) = P;	
+}
+
+
+Polynomial ReadPoly()
+{	
+	int length;
+	int Coef;
+	int Expon;
+
+	Polynomial P, Rear, t;
+	scanf("%d", &length);	
+
+	/*链表头空结点*/
+	P = (Polynomial)malloc(sizeof(struct PolyNode));
+	P->Link = NULL;
+	Rear = P;
+
+	
+	while(length--)
+	{	
+		scanf("%d %d", &Coef, &Expon);
+		/*输入注意如果出现系数为0的话去掉！！*/
+		if(Coef != 0)
+			Attach(Coef,Expon,&Rear);
+	}
+	/*把链表头部的临时的空结点删除掉*/
+	t = P;
+	P = P->Link;
+	free(t);
+	return P;
+}
+
+void PrintPoly(Polynomial L)
+{
+	int flag = 0;
+	//L = L->Link;
+	
+	if(!L)
+	{
+		printf("0 0\n");
+		return;
+	}
+	/*非零项不需要输出*/
+	while(L)
+	{
+		if(!flag)
+		{
+			flag = 1;
+		}
+		else
+		{
+			printf(" ");
+		}
+
+		printf("%d ",L->Coef);
+		printf("%d",L->Expon);	
+
+		L = L->Link;
+	}
+	printf("\n");
+}
+
+Polynomial Add(Polynomial P1, Polynomial P2)
+{
+	Polynomial P, t1, t2, Rear;
+	t1 = P1;
+	t2 = P2;
+	/*申请一个空的头结点*/
+	P = (Polynomial)malloc(sizeof(struct PolyNode));
+	P->Link = NULL;
+	Rear = P;
+
+	while(t1&&t2)
+	{
+		if(t1->Expon == t2->Expon)
+		{
+			/*系数为0项目要去掉*/
+			if((t1->Coef + t2->Coef)!=0)
+			{
+				Attach((t1->Coef + t2->Coef),t1->Expon,&Rear);
+			}			
+			t1 = t1->Link;
+			t2 = t2->Link;
+		}
+		else if(t1->Expon > t2->Expon)
+		{
+			Attach(t1->Coef,t1->Expon,&Rear);
+			t1 = t1->Link;
+
+		}
+		else
+		{
+			Attach(t2->Coef,t2->Expon,&Rear);
+			t2 = t2->Link;
+		}
+	}
+	while(t1)
+	{
+		Attach(t1->Coef,t1->Expon,&Rear);
+		t1 = t1->Link;
+	}
+	while(t2)
+	{
+		Attach(t2->Coef,t2->Expon,&Rear);
+		t2 = t2->Link;
+	}
+
+	t2 = P;
+	P = P->Link;
+	free(t2);
+	return P;
+
+}
+
+
+Polynomial Mult(Polynomial P1, Polynomial P2)
+{
+	Polynomial t1, t2, P, Rear,t;
+	ElementType c,e;
+
+	if(!P1 || !P2) /*判断P1， P2是否为空结点*/
+	{
+		return NULL;
+	}
+	t1 = P1;
+	t2 = P2;
+	P = (Polynomial)malloc(sizeof(struct PolyNode));
+	Rear = P;
+
+	while(t2)/*用P1的第一项先乘以P2的每一项,得到P*/
+	{
+		Attach(t1->Coef*t2->Coef, t1->Expon+t2->Expon,&Rear);
+		t2 = t2->Link;
+	}
+	t1 = t1->Link;
+	while(t1)
+	{
+		t2 = P2;
+		Rear = P;
+		while(t2)
+		{	
+			c = t1->Coef * t2->Coef;
+			e = t1->Expon + t2->Expon;
+
+			while(Rear->Link && Rear->Link->Expon > e)
+			{
+				Rear = Rear->Link;
+			}
+			if(Rear->Link && Rear->Link->Expon == e)
+			{
+				if(Rear->Link->Coef +c)
+				{
+					Rear->Link->Coef += c;
+				}
+				else
+				{
+					t = Rear->Link;
+					Rear->Link = t->Link;
+					free(t);
+				}
+			}
+			else
+			{
+				t = (Polynomial)malloc(sizeof(struct PolyNode));
+				t->Coef = c;
+				t->Expon = e;
+				t->Link = Rear->Link;
+				Rear->Link = t;
+				Rear = Rear->Link;
+			}
+
+			t2 = t2->Link;
+
+		}
+		t1 = t1->Link;
+	}
+	/*表头的空结点去掉*/
+	t2 = P;
+	P = P->Link;
+	free(t2);
+
+	return P;
+}
