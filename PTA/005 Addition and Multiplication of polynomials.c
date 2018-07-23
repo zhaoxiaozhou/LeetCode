@@ -363,7 +363,6 @@ Polynominal Mult1(Polynominal P1, Polynominal P2)
 }
 
 
-
 /*PTA 正确答案，上面有一点问题*/
 #include<stdio.h>
 #include<stdlib.h>
