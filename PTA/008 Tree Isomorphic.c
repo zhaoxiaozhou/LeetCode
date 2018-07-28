@@ -1,3 +1,5 @@
+/*这个代码调试了一段时间，一开始以为判断同构的问题*/
+/*后来竟然是建立树的时候，一定要带调试信息，判断树根*/
 #include<stdio.h>
 #include<stdlib.h>
 
@@ -89,7 +91,7 @@ Tree BuildTree(struct TreeNode T[])
 			}
 		}		
 	}
-	printf("Root is:%d\n", Root);
+	//printf("Root is:%d\n", Root);
 	return Root;
 
 }
