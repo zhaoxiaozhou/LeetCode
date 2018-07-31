@@ -92,7 +92,6 @@ Tree Insert(Tree T, int V)
 	return T;
 }
 
-
 int Check(Tree T, int V)
 {
 	/*根节点查找过了*/
