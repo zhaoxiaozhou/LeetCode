@@ -63,7 +63,7 @@ int main()
 		scanf("%d", &A[i]);
 	}
 	/*sort elements of array*/
-	/*compare function to determine the order*/
+	/*compare function to determine the order*/  
 	qsort(A, N, sizeof(int), compare);
 	
 	solve(0, N - 1, 0);
