@@ -1,5 +1,16 @@
 #include <stdio.h>
 #include <stdlib.h>
+/*下面是错误的代码*/
+                /*只有两种情况，忽略了左右子树都为空的情况*/
+                // if(BST->Left != NULL)
+                // {
+                //     BST = BST->Left;
+                // }
+                // else if(BST->Right != NULL)
+                // {
+                //     BST = BST->Right;
+                // }
+/*这个题目很值得好好看一看*/
 
 typedef int ElementType;
 typedef struct TNode *Position;
