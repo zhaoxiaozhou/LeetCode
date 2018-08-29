@@ -21,7 +21,7 @@ Tree CreateTree()
 	T = (Tree)malloc(sizeof(struct TreeNode));
 	T->Left = T->Right = NULL;
 	T->Weight = 0;
-	return T;
+	return T;  
 }
 
 /*堆的构造*/
